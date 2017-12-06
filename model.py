@@ -42,8 +42,12 @@ def get_frontend(input_width, input_height) -> Sequential:
     model.add(Dropout(0.5))
     model.add(Convolution2D(4096, 1, 1, activation='relu', name='fc7'))
     model.add(Dropout(0.5))
+
     # Note: this layer has linear activations, not ReLU
-    model.add(Convolution2D(21, 1, 1, activation='linear', name='fc-final'))
+    # model.add(Convolution2D(21, 1, 1, activation='linear', name='fc-final'))
+
+    # Changing the number of channels for Stanford Dataset
+    model.add(Convolution2D(8, 1, 1, activation='linear', name='fc-final'))
 
     # model.layers[-1].output_shape == (None, 16, 16, 21)
     return model

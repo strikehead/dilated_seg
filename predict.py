@@ -22,7 +22,8 @@ from utils import interp_map, pascal_palette
 input_width, input_height = 900, 900
 label_margin = 186
 
-has_context_module = False
+# Should be true whenever we are using pretrained weights as it is
+has_context_module = True
 
 def get_trained_model(args):
     """ Returns a model with loaded weights. """
@@ -124,7 +125,7 @@ def forward_pass(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_path', nargs='?', default='images/cat.jpg',
+    parser.add_argument('input_path', nargs='?', default='images/im4.jpg',
                         help='Required path to input image')
     parser.add_argument('--output_path', default=None,
                         help='Path to segmented image')

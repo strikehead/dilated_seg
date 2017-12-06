@@ -28,16 +28,16 @@ def load_weights(model, weights_path):
 
 @click.command()
 @click.option('--train-list-fname', type=click.Path(exists=True),
-              default= 'iccv09Data/train.txt')  #'benchmark_RELEASE/dataset/train.txt')
+              default= 'iccv09Data/train_temp.txt')  #'benchmark_RELEASE/dataset/train.txt')
 @click.option('--val-list-fname', type=click.Path(exists=True),
-              default='iccv09Data/val.txt') #'benchmark_RELEASE/dataset/val.txt')
+              default='iccv09Data/val_temp.txt') #'benchmark_RELEASE/dataset/val.txt')
 @click.option('--img-root', type=click.Path(exists=True),
               default='iccv09Data/images') #'benchmark_RELEASE/dataset/img')
 @click.option('--mask-root', type=click.Path(exists=True),
               default='iccv09Data/out' ) #'benchmark_RELEASE/dataset/pngs')
 @click.option('--weights-path', type=click.Path(exists=True),
               default='conversion/converted/dilation8_pascal_voc.npy') #'conversion/converted/vgg_conv.npy')
-@click.option('--batch-size', type=int, default=10)
+@click.option('--batch-size', type=int, default=5)
 @click.option('--learning-rate', type=float, default=1e-4)
 def train(train_list_fname,
           val_list_fname,
@@ -118,11 +118,11 @@ def train(train_list_fname,
             img_target_size=(500, 500),
             mask_target_size=(16, 16)),
         samples_per_epoch=len(train_basenames),
-        nb_epoch=2,
+        nb_epoch=1,
         validation_data=datagen_val.flow_from_list(
             val_img_fnames,
             val_mask_fnames,
-            batch_size=8,
+            batch_size=5,
             img_target_size=(500, 500),
             mask_target_size=(16, 16)),
         nb_val_samples=len(val_basenames),

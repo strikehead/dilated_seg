@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
@@ -32,17 +31,8 @@ def main():
     except OSError:
         pass
 
-    # BOUNDARIES_IDX = 0
-    # SEGMENTATION_IDX = 1
-    # CATEGORIES_PRESENT_IDX  = 2
-
     for f_cnt, fname in enumerate(files):
-        #mat = scipy.io.loadmat(fname, mat_dtype=True)
-        #seg_data = mat['GTcls'][0][0][SEGMENTATION_IDX]
-        #img_data = np.zeros(seg_data.shape, dtype=np.uint8)
         img_data = []
-        print(type(img_data))
-        print (f_cnt, fname)
         with open(fname,'rb') as f:
         	for line in f:
         		img_data.append(line.split())
@@ -52,11 +42,8 @@ def main():
         		# 	img_data = np.array(line.split())
 
         img_data = np.array(img_data, dtype=np.uint8)
+        np.place(img_data,img_data==255,[8])
         print (img_data.shape)
-
-        # for i in range(img_data.shape[0]):
-        #     for j in range(img_data.shape[1]):
-        #         img_data[i, j] = seg_data[i, j]
 
         img = Image.fromarray(img_data)
         img_name = str.replace(path.basename(fname), '.regions.txt', '.png')
