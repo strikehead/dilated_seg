@@ -23,7 +23,7 @@ input_width, input_height = 900, 900
 label_margin = 186
 
 # Should be true whenever we are using pretrained weights as it is
-has_context_module = True
+has_context_module = False
 
 def get_trained_model(args):
     """ Returns a model with loaded weights. """
@@ -105,7 +105,7 @@ def forward_pass(args):
 
     # Reshape to 2d here since the networks outputs a flat array per channel
     prob_edge = np.sqrt(prob.shape[0]).astype(np.int)
-    prob = prob.reshape((prob_edge, prob_edge, 21))
+    prob = prob.reshape((prob_edge, prob_edge, 9))
 
     # Upsample
     if args.zoom > 1:
@@ -125,7 +125,7 @@ def forward_pass(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_path', nargs='?', default='images/im4.jpg',
+    parser.add_argument('input_path', nargs='?', default='images/im1.jpg',
                         help='Required path to input image')
     parser.add_argument('--output_path', default=None,
                         help='Path to segmented image')

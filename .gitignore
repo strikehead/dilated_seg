@@ -1,0 +1,4 @@
+trained/*
+iccv09Data/*
+*.pyc
+weight*.hdf5
