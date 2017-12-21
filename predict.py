@@ -44,6 +44,8 @@ def get_trained_model(args):
         for layer in model.layers:
             if layer.name in weights_data.keys():
                 layer_weights = weights_data[layer.name]
+                print (np.shape(layer_weights['weights']))
+                print ('--' + np.shape(layer.get_weights()))
                 layer.set_weights((layer_weights['weights'],
                                    layer_weights['biases']))
 
@@ -51,7 +53,7 @@ def get_trained_model(args):
         """ Load a Keras checkpoint. """
         model.load_weights(args.weights_path)
 
-    if args.weights_path.endswith('.npy'):
+    if args.weights_path.endswith('.npy'): 
         load_tf_weights()
     elif args.weights_path.endswith('.hdf5'):
         load_keras_weights()
@@ -105,7 +107,7 @@ def forward_pass(args):
 
     # Reshape to 2d here since the networks outputs a flat array per channel
     prob_edge = np.sqrt(prob.shape[0]).astype(np.int)
-    prob = prob.reshape((prob_edge, prob_edge, 21))
+    prob = prob.reshape((prob_edge, prob_edge, 9))
 
     # Upsample
     if args.zoom > 1:
@@ -113,6 +115,8 @@ def forward_pass(args):
 
     # Recover the most likely prediction (actual segment class)
     prediction = np.argmax(prob, axis=2)
+
+    np.save('prediction1.npy',prediction)
 
     # Apply the color palette to the segmented image
     color_image = np.array(pascal_palette)[prediction.ravel()].reshape(
@@ -125,7 +129,7 @@ def forward_pass(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('input_path', nargs='?', default='images/im4.jpg',
+    parser.add_argument('input_path', nargs='?', default='images/im3.jpg',
                         help='Required path to input image')
     parser.add_argument('--output_path', default=None,
                         help='Path to segmented image')

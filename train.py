@@ -68,7 +68,7 @@ def train(train_list_fname,
 
     model_checkpoint = callbacks.ModelCheckpoint(
         checkpoints_folder + '/ep{epoch:02d}-vl{val_loss:.4f}.hdf5',
-        monitor='loss')
+        monitor='loss',period=10)
     tensorboard_cback = callbacks.TensorBoard(
         log_dir='{}/tboard'.format(checkpoints_folder),
         histogram_freq=0,
@@ -90,7 +90,7 @@ def train(train_list_fname,
 
     model.compile(loss='sparse_categorical_crossentropy',
                   optimizer=optimizers.SGD(lr=learning_rate, momentum=0.9),
-                  metrics=['accuracy'])
+                  metrics=['accuracy','sparse_categorical_accuracy'])
 
     # Build absolute image paths
     def build_abs_paths(basenames):

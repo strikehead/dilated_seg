@@ -1,0 +1,64 @@
+conv1_1  -- (None, 498, 498, 64)
+loaded
+conv1_2  -- (None, 496, 496, 64)
+loaded
+maxpooling2d_1  -- (None, 248, 248, 64)
+loaded
+conv2_1  -- (None, 246, 246, 128)
+loaded
+conv2_2  -- (None, 244, 244, 128)
+loaded
+maxpooling2d_2  -- (None, 122, 122, 128)
+loaded
+conv3_1  -- (None, 120, 120, 256)
+loaded
+conv3_2  -- (None, 118, 118, 256)
+loaded
+conv3_3  -- (None, 116, 116, 256)
+loaded
+maxpooling2d_3  -- (None, 58, 58, 256)
+loaded
+conv4_1  -- (None, 56, 56, 512)
+loaded
+conv4_2  -- (None, 54, 54, 512)
+loaded
+conv4_3  -- (None, 52, 52, 512)
+loaded
+conv5_1  -- (None, 48, 48, 512)
+loaded
+conv5_2  -- (None, 44, 44, 512)
+loaded
+conv5_3  -- (None, 40, 40, 512)
+loaded
+fc6  -- (None, 16, 16, 4096)
+loaded
+dropout_1  -- (None, 16, 16, 4096)
+loaded
+fc7  -- (None, 16, 16, 4096)
+loaded
+dropout_2  -- (None, 16, 16, 4096)
+loaded
+fc-final_2  -- (None, 16, 16, 9)
+loaded
+zeropadding2d_1  -- (None, 82, 82, 9)
+loaded
+ctx_conv1_1  -- (None, 80, 80, 18)
+loaded
+ctx_conv1_2  -- (None, 78, 78, 18)
+loaded
+ctx_conv2_1  -- (None, 74, 74, 36)
+loaded
+ctx_conv3_1  -- (None, 66, 66, 72)
+loaded
+ctx_conv4_1  -- (None, 50, 50, 144)
+loaded
+ctx_conv5_1  -- (None, 18, 18, 288)
+loaded
+ctx_fc1  -- (None, 16, 16, 288)
+loaded
+ctx_final  -- (None, 16, 16, 9)
+loaded
+reshape_1  -- (None, 256, 9)
+loaded
+activation_1  -- (None, 256, 9)
+

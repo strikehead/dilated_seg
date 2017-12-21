@@ -12,6 +12,7 @@ import os
 from os import path
 from PIL import Image
 import numpy as np
+from utils import interp_map, pascal_palette
 
 
 def main():
@@ -45,9 +46,21 @@ def main():
         np.place(img_data,img_data==255,[8])
         print (img_data.shape)
 
-        img = Image.fromarray(img_data)
-        img_name = str.replace(path.basename(fname), '.regions.txt', '.png')
-        img.save(path.join(args.out_dir, img_name), 'png')
+        npy_name = str.replace(path.basename(fname), '.regions.txt', '_label.npy')
+        out_path = path.join(args.out_dir,npy_name)
+        np.save(out_path, img_data)
+
+
+        # #img = Image.fromarray(img_data)
+        # img_name = str.replace(path.basename(fname), '.regions.txt', '_true.png')
+        # #img.save(path.join(args.out_dir, img_name), 'png')
+        # color_image = np.array(pascal_palette)[img_data.ravel()].reshape(
+        #     img_data.shape + (3,))
+
+        # out_path = path.join(args.out_dir,img_name)
+        # print('Saving results to: ', out_path)
+        # with open(out_path, 'wb') as out_file:
+        #     Image.fromarray(color_image).save(out_file)
 
         #print(f'{f_cnt:05}/{len(files):05}')
 
