@@ -10,33 +10,37 @@ import numpy as np
 from keras import callbacks, optimizers
 from IPython import embed
 
-from model import get_frontend, add_softmax
+from model import get_frontend, add_softmax, add_context
 from utils.image_reader import (
     RandomTransformer,
     SegmentationDataGenerator)
 
 
 def load_weights(model, weights_path):
-    weights_data = np.load(weights_path, encoding='latin1').item()
+    if weights_path.endswith('.hdf5'):
+        model.load_weights(weights_path)
+    else:
+        weights_data = np.load(weights_path, encoding='latin1').item()
 
-    for layer in model.layers:
-        if layer.name in weights_data.keys():
-            layer_weights = weights_data[layer.name]
-            layer.set_weights((layer_weights['weights'],
-                               layer_weights['biases']))
+        for layer in model.layers:
+            print (layer.name,' --',layer.output_shape)
+            if layer.name in weights_data.keys():
+                layer_weights = weights_data[layer.name]
+                layer.set_weights((layer_weights['weights'],
+                                   layer_weights['biases']))
 
 
 @click.command()
 @click.option('--train-list-fname', type=click.Path(exists=True),
-              default= 'iccv09Data/train_temp.txt')  #'benchmark_RELEASE/dataset/train.txt')
+              default= 'iccv09Data/train.txt')  #'benchmark_RELEASE/dataset/train.txt')
 @click.option('--val-list-fname', type=click.Path(exists=True),
-              default='iccv09Data/val_temp.txt') #'benchmark_RELEASE/dataset/val.txt')
+              default='iccv09Data/val.txt') #'benchmark_RELEASE/dataset/val.txt')
 @click.option('--img-root', type=click.Path(exists=True),
               default='iccv09Data/images') #'benchmark_RELEASE/dataset/img')
 @click.option('--mask-root', type=click.Path(exists=True),
               default='iccv09Data/out' ) #'benchmark_RELEASE/dataset/pngs')
 @click.option('--weights-path', type=click.Path(exists=True),
-              default='conversion/converted/dilation8_pascal_voc.npy') #'conversion/converted/vgg_conv.npy')
+              default='blah.npy') #'conversion/converted/vgg_conv.npy')
 @click.option('--batch-size', type=int, default=5)
 @click.option('--learning-rate', type=float, default=1e-4)
 def train(train_list_fname,
@@ -55,6 +59,7 @@ def train(train_list_fname,
     transformer_val = RandomTransformer(horizontal_flip=False, vertical_flip=False)
     datagen_val = SegmentationDataGenerator(transformer_val)
 
+    train_context_module = False
     train_desc = '{}-lr{:.0e}-bs{:03d}'.format(
         time.strftime("%Y-%m-%d %H:%M"),
         learning_rate,
@@ -83,8 +88,10 @@ def train(train_list_fname,
         verbose=1,
         min_lr=0.05 * learning_rate)
 
-    model = add_softmax(
-        get_frontend(500, 500))
+    model = get_frontend(500, 500)
+    if train_context_module:
+        model = add_context(model)
+    model = add_softmax(model)
 
     load_weights(model, weights_path)
 
@@ -118,7 +125,7 @@ def train(train_list_fname,
             img_target_size=(500, 500),
             mask_target_size=(16, 16)),
         samples_per_epoch=len(train_basenames),
-        nb_epoch=1,
+        nb_epoch=10,
         validation_data=datagen_val.flow_from_list(
             val_img_fnames,
             val_mask_fnames,

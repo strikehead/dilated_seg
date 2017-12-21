@@ -49,7 +49,6 @@ def get_frontend(input_width, input_height) -> Sequential:
     # Changing the number of channels for Stanford Dataset
     model.add(Convolution2D(9, 1, 1, activation='linear', name='fc-final_2'))
 
-    # model.layers[-1].output_shape == (None, 16, 16, 21)
     return model
 
 
@@ -71,14 +70,14 @@ def add_softmax(model: Sequential) -> Sequential:
 
 def add_context(model: Sequential) -> Sequential:
     """ Append the context layers to the frontend. """
-    model.add(ZeroPadding2D(padding=(33, 33)))   #  33 on each side : 16+66 ; 
-    model.add(Convolution2D(42, 3, 3, activation='relu', name='ct_conv1_1')) # -2
-    model.add(Convolution2D(42, 3, 3, activation='relu', name='ct_conv1_2')) # -2
-    model.add(AtrousConvolution2D(84, 3, 3, atrous_rate=(2, 2), activation='relu', name='ct_conv2_1'))  # -4
-    model.add(AtrousConvolution2D(168, 3, 3, atrous_rate=(4, 4), activation='relu', name='ct_conv3_1')) # -8
-    model.add(AtrousConvolution2D(336, 3, 3, atrous_rate=(8, 8), activation='relu', name='ct_conv4_1')) # -16
-    model.add(AtrousConvolution2D(672, 3, 3, atrous_rate=(16, 16), activation='relu', name='ct_conv5_1')) # -32
-    model.add(Convolution2D(672, 3, 3, activation='relu', name='ct_fc1')) # -2
-    model.add(Convolution2D(21, 1, 1, name='ct_final')) # 16,16, 9
+    model.add(ZeroPadding2D(padding=(33, 33)))
+    model.add(Convolution2D(18, 3, 3, activation='relu', name='ctx_conv1_1'))
+    model.add(Convolution2D(18, 3, 3, activation='relu', name='ctx_conv1_2'))
+    model.add(AtrousConvolution2D(36, 3, 3, atrous_rate=(2, 2), activation='relu', name='ctx_conv2_1'))
+    model.add(AtrousConvolution2D(72, 3, 3, atrous_rate=(4, 4), activation='relu', name='ctx_conv3_1'))
+    model.add(AtrousConvolution2D(144, 3, 3, atrous_rate=(8, 8), activation='relu', name='ctx_conv4_1'))
+    model.add(AtrousConvolution2D(288, 3, 3, atrous_rate=(16, 16), activation='relu', name='ctx_conv5_1'))
+    model.add(Convolution2D(288, 3, 3, activation='relu', name='ctx_fc1'))
+    model.add(Convolution2D(9, 1, 1, name='ctx_final'))
 
     return model

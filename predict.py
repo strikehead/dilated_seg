@@ -23,7 +23,7 @@ input_width, input_height = 900, 900
 label_margin = 186
 
 # Should be true whenever we are using pretrained weights as it is
-has_context_module = True
+has_context_module = False
 
 def get_trained_model(args):
     """ Returns a model with loaded weights. """
