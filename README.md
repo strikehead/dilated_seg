@@ -1,6 +1,9 @@
 # dilated_seg
 Vision project on experimenting with semantic segmentation using Dilated Conv Nets
 
+This repository is built upon : https://github.com/nicolov/segmentation_keras 
+@TODO : To be modified as a Fork of `segmentation_keras` repo
+
 ## Steps
 
 Pre-trained model:
